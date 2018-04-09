@@ -1,0 +1,22 @@
+{
+  "name": "wba2ss18salzmanndikhorst",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst.git"
+  },
+  "author": "Julian Dik, Sven Salzmann, Anton Horst",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst/issues"
+  },
+  "homepage": "https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst#readme",
+  "dependencies": {
+    "express": "4.16.3"
+  }
+}
