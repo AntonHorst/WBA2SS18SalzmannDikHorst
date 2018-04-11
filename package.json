@@ -1,14 +1,14 @@
 {
-  "name": "wba2ss18salzmanndikhorst",
-  "version": "0.0.0",
-  "description": "",
+  "name": "WBA2SS18SalzmannDikHorst",
+  "version": "0.0.1",
+  "description": "Ein Projekt für WBA2",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst.git"
+    "url": "https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst"
   },
   "author": "Julian Dik, Sven Salzmann, Anton Horst",
   "license": "ISC",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst#readme",
   "dependencies": {
-    "express": "4.16.3"
+    "express": "4.16.3",
+    "chalk": "4.2.0"
   }
 }
