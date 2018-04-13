@@ -19,7 +19,8 @@ fs.readFile(__dirname+'/staedte.json','utf8',(err,data) => {
     for(var i=0;i < data.length; i++){
     console.log("\n name:"+chalk.blue(jsonobj.cities[i].name)+"\n",
     "country:"+chalk.red(jsonobj.cities[i].country)+"\n",
-    "population:"+chalk.green(jsonobj.cities[i].population)+"\n");
+    "population:"+chalk.green(jsonobj.cities[i].population)+"\n",
+    "\n--------------------");
     }
   })
 })
