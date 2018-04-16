@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AntonHorst/WBA2SS18SalzmannDikHorst#readme",
   "dependencies": {
+    "array-concat": "^0.1.1",
     "chalk": "2.3.2",
     "express": "4.16.3"
   }
