@@ -19,6 +19,7 @@
   "dependencies": {
     "array-concat": "^0.1.1",
     "chalk": "2.3.2",
-    "express": "4.16.3"
+    "express": "4.16.3",
+    "promise": "^8.0.1"
   }
 }

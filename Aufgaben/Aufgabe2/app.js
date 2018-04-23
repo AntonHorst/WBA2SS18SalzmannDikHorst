@@ -25,11 +25,10 @@ var promise2 = new Promise(function(resolve, reject) {
   }
 )})
 
-var ausgabe = Promise.all([promise1, promise2]).then(function(fullfilled) {
+Promise.all([promise1, promise2]).then(function(fullfilled) {
 	console.log(fullfilled);
 })
 .catch(function(error) {
-	// One or more promises was rejected
 });
 
 /*var ausgabe = function(){
