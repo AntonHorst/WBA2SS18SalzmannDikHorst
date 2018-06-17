@@ -27,8 +27,6 @@ var promise2 = new Promise(function(resolve, reject) {
 )})
 
 Promise.all([promise1, promise2]).then(function(fullfilled) {
-//  fullfilled= JSON.parse(fullfilled);
-	//console.log(fullfilled[0][2]);
   for(var j =0; j<fullfilled.length; j++){
     for(var i=0; i<fullfilled[j].length; i++){
     //console.log(fullfilled[j][i]);
