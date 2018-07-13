@@ -128,7 +128,7 @@ router.patch("/:tasteID", (req, res, next) =>{
 
 router.delete('/:tasteID', (req, res, next) =>{
     const id = req.params.tasteID;
-    Product.remove({_id: id })
+    Taste.remove({_id: id })
     .exec()
     .then(result => {
         res.status(200).json({
