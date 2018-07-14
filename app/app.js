@@ -9,17 +9,15 @@ var cookieParser = require('cookie-parser');
 const queryString = require('query-string');
 var querystring = require('querystring');
 var request = require('request'); // "Request" library
-
+var useruri = '';
 //Schema Import
 var Taste = require("./api/models/taste");
+var User = require("./api/models/user");
+var UserList = require("./api/models/userList");
 
 const tasteRoutes = require('./api/routes/taste');
-const productRoutes = require('./api/routes/products');
-const orderRoutes = require('./api/routes/orders');
-
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
-app.use('/taste', tasteRoutes);
+const userRoutes = require('./api/routes/user');
+const UserListRoutes = require('./api/routes/userList');
 
 // Use npm packages
 app.use(morgan('dev')); //monitoring 
@@ -27,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: false})); //bodyparser
 app.use(bodyParser.json());
 
 //mongoose init
-mongoose.connect('mongodb://locafy_admin:' + process.env.MONGO_ATLAS_PW + '@locafy-shard-00-00-pe0eg.mongodb.net:27017,locafy-shard-00-01-pe0eg.mongodb.net:27017,locafy-shard-00-02-pe0eg.mongodb.net:27017/test?ssl=true&replicaSet=locafy-shard-0&authSource=admin&retryWrites=true', { useNewUrlParser: true });
+mongoose.connect('mongodb://admin:admin@locafy-shard-00-00-aw6ai.mongodb.net:27017,locafy-shard-00-01-aw6ai.mongodb.net:27017,locafy-shard-00-02-aw6ai.mongodb.net:27017/test?ssl=true&replicaSet=Locafy-shard-0&authSource=admin&retryWrites=true', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 app.use((req, res, next) => {   
@@ -40,6 +38,12 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+app.use('/taste', tasteRoutes);
+app.use('/user', userRoutes);
+app.use('/userList', UserListRoutes);
+
+
 
 //spotify web api init
 
@@ -58,8 +62,8 @@ var generateRandomString = function(length) {
     return text;
   };
 
-var client_id  = 'eb2b82ced16343f28761059752b8a80a';
-var client_secret = '35c86255623f4a75ab43100acf095996';
+var client_id  = 'b1c8b493b0604ce58ed5e5f28c3130a9';
+var client_secret = 'faa8849ed7a7466f8009e23dc8f86dc8';
 var redirect_uri = 'http://localhost:3000/callback';
 
 var spoturi = '';
@@ -100,6 +104,15 @@ app.get('/callback', function(req, res) {
     var code = req.query.code || null;
     var state = req.query.state || null;
     var storedState = req.cookies ? req.cookies[stateKey] : null;
+    var user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        name: '',
+        uri: '',
+        artist_name: [20],
+        artist_uri: [20]
+        }
+    );
+    var useruri = '';
   
     if (state === null || state !== storedState) {
         res.redirect('/#' +
@@ -141,22 +154,56 @@ app.get('/callback', function(req, res) {
                 console.log(body);
             });
 
-            var options = {
-                url: 'https://api.spotify.com/v1/me/top/artists',
+            var options1 = {
+                url: 'https://api.spotify.com/v1/me/',
                 headers: { 'Authorization': 'Bearer ' + access_token },
                 json: true
             };
+        
 
-            request.get(options, function(error, response, body) {
-                for (var i = 0; i < body.items.length; i++){
-                    console.log(body.items[i].name);
-                    var taste = new Taste({
+            request.get(options1, function(error, response, body) {
+                    console.log(body.display_name);
+                    user.name = body.display_name;
+                    user.uri = body.uri;
+                    useruri = body.uri;
+                   /* for (var i = 0; i < body.items.length; i++){
+                        var user = this.user({
+                            artists: body.items[i].name,
+                            artists.artists_uri: body.items[i].uri
+                        })   
+                        
+                    } */
+                   // user.save();
+            });
+
+            var optionsA = {
+                url: 'https://api.spotify.com/v1/me/top/artists',
+                headers: { 'Authorization': 'Bearer ' + access_token },
+                json: true
+            }; 
+
+            request.get(optionsA, function(error, response, body) {
+                    console.log(body.items[1].name);
+                    for (var i = 0; i < body.items.length; i++){
+                        user.artist_name[i] = body.items[i].name;
+                        user.artist_uri[i] = body.items[i].uri;       
+                    }
+                    
+                    User.find()
+                    .select('uri')
+                    .exec()
+                    .then(
+                        userList = new UserList({
                         _id: new mongoose.Types.ObjectId(),
-                        name: body.items[i].name,
-                        popularity: body.items[i].popularity
-                    });
-                    taste.save();
-                }
+                        uri: useruri
+                        })
+                    )   
+                    userList.save();
+                    user.save();
+                    //} 
+
+               
+                
             });
 
             res.redirect('/#' +
@@ -174,6 +221,7 @@ app.get('/callback', function(req, res) {
         }
     });
     }
+    
   });
   
   app.get('/refresh_token', function(req, res) {
