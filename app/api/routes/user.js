@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
                     artist_uri: doc.artist_uri,
                     request: {
                         type: 'GET',
-                        url: 'http://localhost:3000/user/' + doc.uri
+                        url: 'http://localhost:3000/user/' + doc._id
                     }
                 }
             })
@@ -57,7 +57,7 @@ router.get('/:uri', (req, res, next) => {
                 user: doc,
                 request: {
                     type: 'GET',
-                    description: 'GET_ALL_TASTES',
+                    description: 'GET USER',
                     url: 'http://localhost:3000/user/'
                 }
             });
@@ -89,6 +89,53 @@ router.delete('/:userURI', (req, res, next) =>{
     .catch(err =>{
         console.og(err);
         res.status(500).json({error: err});
+    });
+    
+});
+router.delete('/:userId', (req, res, next) =>{
+    const id = req.params.userId;
+    User.remove({_id: id })
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: 'User deleted',
+            request: {
+                type: 'POST',
+                url: 'http://localhost:3000/user/' + _id,
+                data: { name: 'String', uri: 'String' }
+            }
+        });
+    })
+    .catch(err =>{
+        console.og(err);
+        res.status(500).json({error: err});
+    });
+    
+});
+
+router.patch("/:userID", (req, res, next) =>{
+    const id = req.params.tasteID;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    User.update({_id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: 'User updated',
+            request: {
+                type: 'GET',
+                description: 'GET_User',
+                        url: 'http://localhost:3000/user/' + id
+            }
+        });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
