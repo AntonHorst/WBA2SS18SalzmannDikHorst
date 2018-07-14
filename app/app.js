@@ -16,8 +16,13 @@ var User = require("./api/models/user");
 var UserList = require("./api/models/userList");
 
 const tasteRoutes = require('./api/routes/taste');
+<<<<<<< HEAD
 const userRoutes = require('./api/routes/user');
 const UserListRoutes = require('./api/routes/userList');
+=======
+const productRoutes = require('./api/routes/products');
+const orderRoutes = require('./api/routes/orders');
+>>>>>>> afebc06af088b18a1d34ba77dbe8af3f09e3a9f4
 
 // Use npm packages
 app.use(morgan('dev')); //monitoring 
@@ -39,11 +44,17 @@ app.use((req, res, next) => {
     next();
 });
 
+<<<<<<< HEAD
 app.use('/taste', tasteRoutes);
 app.use('/user', userRoutes);
 app.use('/userList', UserListRoutes);
 
 
+=======
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
+app.use('/taste', tasteRoutes);
+>>>>>>> afebc06af088b18a1d34ba77dbe8af3f09e3a9f4
 
 //spotify web api init
 
@@ -93,7 +104,8 @@ app.get('/login', function(req, res) {
         scope: scope,
         redirect_uri: redirect_uri,
         state: state
-      }));
+      })
+    );
   });
 
 app.get('/callback', function(req, res) {
