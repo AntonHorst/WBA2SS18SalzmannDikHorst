@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
     .then(docs => {
         const response = {
             count: docs.length,
-            peterlustig: docs.map(doc => {
+            userlist: docs.map(doc => {
                 return {
                     name: doc.name,
                     uri: doc.uri,

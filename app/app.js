@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const http = require('http');
 const mongoose = require('mongoose');
 var SpotifyWebApi = require('spotify-web-api-node');
 var cookieParser = require('cookie-parser');
@@ -15,7 +16,6 @@ var Taste = require("./api/models/taste");
 var User = require("./api/models/user");
 var UserList = require("./api/models/userList");
 var TasteScore = require("./api/models/tasteScore");
-
 const tasteRoutes = require('./api/routes/taste');
 const userRoutes = require('./api/routes/user');
 const UserListRoutes = require('./api/routes/userList');
@@ -80,6 +80,7 @@ var spotifyApi = new SpotifyWebApi({
 var stateKey = 'spotify_auth_state';
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
+
 
 
 app.get('/login', function(req, res) {
@@ -155,7 +156,7 @@ app.get('/callback', function(req, res) {
 
             // use the access token to access the Spotify Web API
             request.get(options2, function(error, response, body) {
-                console.log(body);
+                //console.log(body);
             });
 
             var options1 = {
@@ -166,7 +167,7 @@ app.get('/callback', function(req, res) {
         
 
             request.get(options1, function(error, response, body) {
-                    console.log(body.display_name);
+                   // console.log(body.display_name);
                     user.name = body.display_name;
                     user.uri = body.uri;
                     useruri = body.uri;
@@ -187,28 +188,27 @@ app.get('/callback', function(req, res) {
             }; 
 
             request.get(optionsA, function(error, response, body) {
-                    console.log(body.items[1].name);
-                    for (var i = 0; i < body.items.length; i++){
-                        user.artist_name[i] = body.items[i].name;
-                        user.artist_uri[i] = body.items[i].uri;       
-                    }
-
-                    User.find()
-                    .select('uri')
-                    .exec()
-                    .then(
-                        userList = new UserList({
-                        _id: new mongoose.Types.ObjectId(),
-                        uri: useruri
-                        })
-                    )   
-                    userList.save();
-                    user.save();
-                    //} 
-                    
+                // console.log(body.items[1].name);
+                for (var i = 0; i < body.items.length; i++){
+                    user.artist_name[i] = body.items[i].name;
+                    user.artist_uri[i] = body.items[i].uri;       
+                }
             
-                
+                User.find()
+                .select('uri')
+                .exec()
+                .then(
+                    userList = new UserList({
+                    _id: new mongoose.Types.ObjectId(),
+                    uri: useruri
+                    })
+                )   
+                userList.save();
+                user.save();  
+
             });
+
+            
 
             res.redirect('/#' +
                 querystring.stringify({
@@ -251,5 +251,20 @@ app.get('/callback', function(req, res) {
       }
     });
   });
+
+  app.get('/alluser', function(req, res){
+    User.find({}, 'artist_uri name',  function(err, docs){
+        for (var i = 0; i < docs.length; i++){
+           for (var j = 0; j < 20; j++){ 
+            console.log(docs[i].artist_uri[j]);
+           }
+        console.log(docs[i].name);   
+        }  
+       // console.log(docs);
+    })
+  })
+
+
+
 
 module.exports = app;
