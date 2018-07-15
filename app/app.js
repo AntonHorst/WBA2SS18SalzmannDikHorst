@@ -284,9 +284,9 @@ app.get('/tastescores', function(req, res){
                     artists_uri: [20]
                 })
                 var counter = 0;
-                for (var k = 0; k < 20; k++){
+                for (var k = 0; k < docs[i].artist_uri.length; k++){
                     //artist 1
-                    for (var l = 0; l < 20; l++){
+                    for (var l = 0; l < docs[i].artist_uri.length; l++){
                         //artist 2 mit 1 vergleichen
                         if(docs[i].artist_uri[k] === docs[j].artist_uri[l] && docs[i].uri !== docs[j].uri){
                             
@@ -305,6 +305,7 @@ app.get('/tastescores', function(req, res){
                 if(tasteScore.useruri1 === tasteScore.useruri2){
                     console.log('User 1 ist User 2');
                 } else {
+
                     tasteScore.save(function(err){
                         console.log(err,tasteScore);
                     });
@@ -320,17 +321,5 @@ app.get('/tastescores', function(req, res){
         res.status(500).json({error: err});
     });
 });
-
-   /*var tasteScore = new TasteScore({
-                _id: new mongoose.Types.ObjectId(),
-                useruri1: docs[i].uri,
-                useruri2: docs[i].uri,
-                score   : "1",
-                artists : "1",
-                artistsId:"1",
-                artist_name: [20],
-                artist_uri: [20]
-                }*/
-
 
 module.exports = app;
