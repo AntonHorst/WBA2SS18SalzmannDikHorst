@@ -96,8 +96,8 @@ router.delete('/:userURI', (req, res, next) =>{
     });
     
 });
-router.delete('/:userId', (req, res, next) =>{
-    const id = req.params.userId;
+router.delete('/:userID', (req, res, next) =>{
+    const id = req.params.userID;
     User.remove({_id: id })
     .exec()
     .then(result => {
@@ -111,14 +111,14 @@ router.delete('/:userId', (req, res, next) =>{
         });
     })
     .catch(err =>{
-        console.og(err);
+        console.log(err);
         res.status(500).json({error: err});
     });
     
 });
 
 router.patch("/:userID", (req, res, next) =>{
-    const id = req.params.tasteID;
+    const id = req.params.userID;
     const updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;

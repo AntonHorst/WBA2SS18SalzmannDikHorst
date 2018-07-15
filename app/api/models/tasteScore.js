@@ -5,8 +5,8 @@ const tasteScoreSchema = mongoose.Schema({
     useruri1: { type: String},
     useruri2: { type: String},
     score   : {type: Number},
-    artists :{type: Array},
-    artistsId:{type:Array}
+    artists_name :{type: Array},
+    artists_uri:{type:Array}
 });
 
 module.exports = mongoose.model('tasteScore', tasteScoreSchema);

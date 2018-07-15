@@ -207,12 +207,16 @@ app.get('/callback', function(req, res) {
                     })
                 )   
                 userList.save();
-                user.save();  
-
+                User.find({uri : user.uri}, function (err, docs) {
+                    if (docs.length){
+                        console.log('User ' + user.uri + ' exists already');
+                    }else{
+                        user.save(function(err){
+                            console.log(err,user);
+                        });
+                    }
+                });
             });
-
-            
-
             res.redirect('/#' +
                 querystring.stringify({
                     access_token: access_token,
@@ -258,12 +262,22 @@ app.get('/callback', function(req, res) {
 app.get('/alluser', function(req, res){
     User.find({}, 'artist_uri name',  function(err, docs){
         for (var i = 0; i < docs.length; i++){
-           for (var j = 0; j < 20; j++){ 
+           for (var j = 0; j < docs[i].artist_uri.length; j++){ 
             console.log(docs[i].artist_uri[j]);
            }
         console.log(docs[i].name);   
         }  
        // console.log(docs);
+    })
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: 'User List',
+        });
+    })
+    .catch(err =>{
+        console.og(err);
+        res.status(500).json({error: err});
     });
 });
 
@@ -271,25 +285,60 @@ app.get('/tastescores', function(req, res){
     User.find().select('name uri artist_uri artist_name')
     .exec()
     .then(docs =>{
+        
         for (var i = 0; i < docs.length; i++){
-            //user1
-            for (var j = 1; j < docs.length; j++){
+            //user 1
+            for (var j = 0; j < docs.length; j++){
                 //user 2 mit 1 vergleichen
+                var tasteScore = new TasteScore({
+                    _id: new mongoose.Types.ObjectId(),
+                    useruri1: docs[i].uri,
+                    useruri2: docs[j].uri,
+                    score   : "",
+                    artists_name: [20],
+                    artists_uri: [20]
+                })
+                var counter = 0;
                 for (var k = 0; k < 20; k++){
                     //artist 1
                     for (var l = 0; l < 20; l++){
                         //artist 2 mit 1 vergleichen
-                        if(docs[i].artist_uri[k] === docs[j].artist_uri[l]){
+                        if(docs[i].artist_uri[k] === docs[j].artist_uri[l] && docs[i].uri !== docs[j].uri){
+                            
+                            tasteScore.artists_name[counter] = docs[i].artist_name[k];
+                            tasteScore.artists_uri[counter] = docs[i].artist_uri[k];
+
                             console.log("User1:" + docs[i].name);
                             console.log("Artist1:" + docs[i].artist_name[k]);
                             console.log("User2:" + docs[j].name);
                             console.log("Artist2:" + docs[j].artist_name[l]);
+                            counter++;
                         }
                     }
                 }
+                if(tasteScore.useruri1 === tasteScore.useruri2){
+                    console.log('User 1 ist User 2');
+                } else {
+                    /*TasteScore.find({useruri1 : tasteScore.useruri1, useruri2 : tasteScore.useruri2}, function (err, docs) {
+                        if (docs.length){
+                            console.log('User ' + tasteScore.useruri1 + ' exists already');
+                        } else {*/
+                            tasteScore.save(function(err){
+                                console.log(err,tasteScore);
+                            });
+                      // }
+                    //});
+                }
             }
         }
+        res.status(200).json({
+            message: 'TasteScores Saved',
+        })
     })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({error: err});
+    });
 });
 
    /*var tasteScore = new TasteScore({
