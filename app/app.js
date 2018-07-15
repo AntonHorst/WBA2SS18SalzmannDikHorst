@@ -229,7 +229,7 @@ app.get('/callback', function(req, res) {
     });
     }
     
-  });
+});
   
   app.get('/refresh_token', function(req, res) {
   
@@ -253,9 +253,9 @@ app.get('/callback', function(req, res) {
         });
       }
     });
-  });
+});
 
-  app.get('/alluser', function(req, res){
+app.get('/alluser', function(req, res){
     User.find({}, 'artist_uri name',  function(err, docs){
         for (var i = 0; i < docs.length; i++){
            for (var j = 0; j < 20; j++){ 
@@ -265,9 +265,43 @@ app.get('/callback', function(req, res) {
         }  
        // console.log(docs);
     });
-  });
+});
 
+app.get('/tastescores', function(req, res){
+    User.find().select('name uri artist_uri artist_name')
+    .exec()
+    .then(docs =>{
+        for (var i = 0; i < docs.length; i++){
+            //user1
+            for (var j = 1; j < docs.length; j++){
+                //user 2 mit 1 vergleichen
+                for (var k = 0; k < 20; k++){
+                    //artist 1
+                    for (var l = 0; l < 20; l++){
+                        //artist 2 mit 1 vergleichen
+                        if(docs[i].artist_uri[k] === docs[j].artist_uri[l]){
+                            console.log("User1:" + docs[i].name);
+                            console.log("Artist1:" + docs[i].artist_name[k]);
+                            console.log("User2:" + docs[j].name);
+                            console.log("Artist2:" + docs[j].artist_name[l]);
+                        }
+                    }
+                }
+            }
+        }
+    })
+});
 
+   /*var tasteScore = new TasteScore({
+                _id: new mongoose.Types.ObjectId(),
+                useruri1: docs[i].uri,
+                useruri2: docs[i].uri,
+                score   : "1",
+                artists : "1",
+                artistsId:"1",
+                artist_name: [20],
+                artist_uri: [20]
+                }*/
 
 
 module.exports = app;

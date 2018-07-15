@@ -22,6 +22,10 @@ router.get('/', (req, res, next) => {
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/user/' + doc._id
+                    },
+                    delete: {
+                        type: 'DELETE',
+                        url: 'http://localhost:3000/user/' + doc._id
                     }
                 }
             })
@@ -138,9 +142,5 @@ router.patch("/:userID", (req, res, next) =>{
         });
     });
 });
-
-
-
-
 
 module.exports = router;
