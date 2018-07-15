@@ -312,6 +312,26 @@ app.get('/tastescores', function(req, res){
                 }
             }
         }
+
+        TasteScore.find().select('_id useruri1 useruri2')
+            .exec()
+            .then(docs => {
+                for (var i = 0; i < docs.length; i++){
+                    var counter = 0;
+                    for (var j = 0; j < docs.length; j++){
+                        if (docs[i].useruri1 === docs[j].useruri1 && docs[i].useruri2 === docs[j].useruri2){
+                            counter ++;
+                        }
+                    console.log('Zeile 331 ' + counter);
+                    }
+                    if (counter !== 0){
+                        var deleteID = docs[i]._id;
+                        TasteScore.remove({_id: deleteID}).exec();
+                    } else {
+                        console.log('kein Nutzer wurde gelöscht');
+                    }
+                }
+            })
         res.status(200).json({
             message: 'TasteScores Saved',
         })
