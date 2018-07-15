@@ -102,6 +102,9 @@ app.get('/login', function(req, res) {
         state: state
       })
     );
+
+
+
   });
 
 app.get('/callback', function(req, res) {
@@ -170,18 +173,10 @@ app.get('/callback', function(req, res) {
         
 
             request.get(options1, function(error, response, body) {
-                   // console.log(body.display_name);
                     user.name = body.display_name;
                     user.uri = body.uri;
                     useruri = body.uri;
-                   /* for (var i = 0; i < body.items.length; i++){
-                        var user = this.user({
-                            artists: body.items[i].name,
-                            artists.artists_uri: body.items[i].uri
-                        })   
-                        
-                    } */
-                   // user.save();
+
             });
 
             var optionsA = {
@@ -197,16 +192,6 @@ app.get('/callback', function(req, res) {
                     user.artist_uri[i] = body.items[i].uri;       
                 }
             
-                User.find()
-                .select('uri')
-                .exec()
-                .then(
-                    userList = new UserList({
-                    _id: new mongoose.Types.ObjectId(),
-                    uri: useruri
-                    })
-                )   
-                userList.save();
                 User.find({uri : user.uri}, function (err, docs) {
                     if (docs.length){
                         console.log('User ' + user.uri + ' exists already');
@@ -320,16 +305,9 @@ app.get('/tastescores', function(req, res){
                 if(tasteScore.useruri1 === tasteScore.useruri2){
                     console.log('User 1 ist User 2');
                 } else {
-                    TasteScore.findOne({"useruri1": tasteScore.useruri1, "useruri2": tasteScore.useruri2 }, function (err, docs1){
-                        if (docs1){
-                            console.log('User exists');
-                        } else {
-               
-                            tasteScore.save(function(err){
-                                console.log(err,tasteScore);
-                            });
-                        }
-                    })
+                    tasteScore.save(function(err){
+                        console.log(err,tasteScore);
+                    });
                 }
             }
         }
