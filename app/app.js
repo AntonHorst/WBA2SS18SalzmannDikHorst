@@ -11,14 +11,17 @@ const queryString = require('query-string');
 var querystring = require('querystring');
 var request = require('request'); // "Request" library
 var useruri = '';
+
 //Schema Import
 var Taste = require("./api/models/taste");
 var User = require("./api/models/user");
 var UserList = require("./api/models/userList");
 var TasteScore = require("./api/models/tasteScore");
+
+//routes Import
 const tasteRoutes = require('./api/routes/taste');
 const userRoutes = require('./api/routes/user');
-const UserListRoutes = require('./api/routes/userList');
+const userListRoutes = require('./api/routes/userList');
 const tasteScoreRoutes = require('./api/routes/tasteScore');
 
 // Use npm packages
@@ -43,7 +46,7 @@ app.use((req, res, next) => {
 
 app.use('/taste', tasteRoutes);
 app.use('/user', userRoutes);
-app.use('/userList', UserListRoutes);
+app.use('/userList', userListRoutes);
 app.use('/tasteScore', tasteScoreRoutes);
 
 
@@ -261,8 +264,8 @@ app.get('/callback', function(req, res) {
         console.log(docs[i].name);   
         }  
        // console.log(docs);
-    })
-  })
+    });
+  });
 
 
 
