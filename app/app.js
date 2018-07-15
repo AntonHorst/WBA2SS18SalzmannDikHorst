@@ -294,7 +294,7 @@ app.get('/tastescores', function(req, res){
                     _id: new mongoose.Types.ObjectId(),
                     useruri1: docs[i].uri,
                     useruri2: docs[j].uri,
-                    score   : "",
+                    score   : "0",
                     artists_name: [20],
                     artists_uri: [20]
                 })
@@ -307,6 +307,7 @@ app.get('/tastescores', function(req, res){
                             
                             tasteScore.artists_name[counter] = docs[i].artist_name[k];
                             tasteScore.artists_uri[counter] = docs[i].artist_uri[k];
+                            tasteScore.score+=0.5;
 
                             console.log("User1:" + docs[i].name);
                             console.log("Artist1:" + docs[i].artist_name[k]);
@@ -319,15 +320,16 @@ app.get('/tastescores', function(req, res){
                 if(tasteScore.useruri1 === tasteScore.useruri2){
                     console.log('User 1 ist User 2');
                 } else {
-                    /*TasteScore.find({useruri1 : tasteScore.useruri1, useruri2 : tasteScore.useruri2}, function (err, docs) {
-                        if (docs.length){
-                            console.log('User ' + tasteScore.useruri1 + ' exists already');
-                        } else {*/
+                    TasteScore.findOne({"useruri1": tasteScore.useruri1, "useruri2": tasteScore.useruri2 }, function (err, docs1){
+                        if (docs1){
+                            console.log('User exists');
+                        } else {
+               
                             tasteScore.save(function(err){
                                 console.log(err,tasteScore);
                             });
-                      // }
-                    //});
+                        }
+                    })
                 }
             }
         }
