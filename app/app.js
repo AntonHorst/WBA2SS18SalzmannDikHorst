@@ -84,7 +84,7 @@ var stateKey = 'spotify_auth_state';
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
-
+///////////SPOTIFY LOGIN///////////////
 
 app.get('/login', function(req, res) {
 
@@ -102,6 +102,81 @@ app.get('/login', function(req, res) {
         state: state
       })
     );
+
+    ///////////SAVE TASTESCORE///////////////
+    User.find().select('name uri artist_uri artist_name')
+    .exec()
+    .then(docs =>{
+        
+        for (var i = 0; i < docs.length; i++){
+            //user 1
+            for (var j = 0; j < docs.length; j++){
+                //user 2 mit 1 vergleichen
+                var tasteScore = new TasteScore({
+                    _id: new mongoose.Types.ObjectId(),
+                    useruri1: docs[i].uri,
+                    useruri2: docs[j].uri,
+                    score   : "0",
+                    artists_name: [20],
+                    artists_uri: [20]
+                })
+                var counter = 0;
+                for (var k = 0; k < docs[i].artist_uri.length; k++){
+                    //artist 1
+                    for (var l = 0; l < docs[i].artist_uri.length; l++){
+                        //artist 2 mit 1 vergleichen
+                        if(docs[i].artist_uri[k] === docs[j].artist_uri[l] && docs[i].uri !== docs[j].uri){
+                            
+                            tasteScore.artists_name[counter] = docs[i].artist_name[k];
+                            tasteScore.artists_uri[counter] = docs[i].artist_uri[k];
+                            tasteScore.score+=0.5;
+
+                            console.log("User1:" + docs[i].name);
+                            console.log("Artist1:" + docs[i].artist_name[k]);
+                            console.log("User2:" + docs[j].name);
+                            console.log("Artist2:" + docs[j].artist_name[l]);
+                            counter++;
+                        }
+                    }
+                }
+                if(tasteScore.useruri1 === tasteScore.useruri2){
+                    console.log('User 1 ist User 2');
+                } else {
+
+                    tasteScore.save(function(err){
+                        console.log(err,tasteScore);
+                    });
+                }
+            }
+        }
+        ///////////DELETE REDUNDANT TASTESCORE///////////////
+        TasteScore.find().select('_id useruri1 useruri2')
+            .exec()
+            .then(docs => {
+                for (var i = 0; i < docs.length; i++){
+                    var counter = 0;
+                    for (var j = 0; j < docs.length; j++){
+                        if (docs[i].useruri1 === docs[j].useruri1 && docs[i].useruri2 === docs[j].useruri2){
+                            counter ++;
+                        }
+                    console.log('Zeile 331 ' + counter);
+                    }
+                    if (counter !== 0){
+                        var deleteID = docs[i]._id;
+                        TasteScore.remove({_id: deleteID}).exec();
+                    } else {
+                        console.log('kein Nutzer wurde gelöscht');
+                    }
+                }
+            })
+        res.status(200).json({
+            message: 'TasteScores Saved',
+        })
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({error: err});
+    });
 
 
 
@@ -245,12 +320,13 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/alluser', function(req, res){
-    User.find({}, 'artist_uri name',  function(err, docs){
+    User.find({}, 'artist_uri uri artist_name name',  function(err, docs){
         for (var i = 0; i < docs.length; i++){
-           for (var j = 0; j < docs[i].artist_uri.length; j++){ 
-            console.log(docs[i].artist_uri[j]);
-           }
+            for (var j = 0; j < docs[i].artist_uri.length; j++){ 
+                console.log(docs[i].artist_name[j]);
+            }
         console.log(docs[i].name);   
+        console.log(docs[i].uri);  
         }  
        // console.log(docs);
     })
@@ -262,82 +338,6 @@ app.get('/alluser', function(req, res){
     })
     .catch(err =>{
         console.og(err);
-        res.status(500).json({error: err});
-    });
-});
-
-app.get('/tastescores', function(req, res){
-    User.find().select('name uri artist_uri artist_name')
-    .exec()
-    .then(docs =>{
-        
-        for (var i = 0; i < docs.length; i++){
-            //user 1
-            for (var j = 0; j < docs.length; j++){
-                //user 2 mit 1 vergleichen
-                var tasteScore = new TasteScore({
-                    _id: new mongoose.Types.ObjectId(),
-                    useruri1: docs[i].uri,
-                    useruri2: docs[j].uri,
-                    score   : "0",
-                    artists_name: [20],
-                    artists_uri: [20]
-                })
-                var counter = 0;
-                for (var k = 0; k < docs[i].artist_uri.length; k++){
-                    //artist 1
-                    for (var l = 0; l < docs[i].artist_uri.length; l++){
-                        //artist 2 mit 1 vergleichen
-                        if(docs[i].artist_uri[k] === docs[j].artist_uri[l] && docs[i].uri !== docs[j].uri){
-                            
-                            tasteScore.artists_name[counter] = docs[i].artist_name[k];
-                            tasteScore.artists_uri[counter] = docs[i].artist_uri[k];
-                            tasteScore.score+=0.5;
-
-                            console.log("User1:" + docs[i].name);
-                            console.log("Artist1:" + docs[i].artist_name[k]);
-                            console.log("User2:" + docs[j].name);
-                            console.log("Artist2:" + docs[j].artist_name[l]);
-                            counter++;
-                        }
-                    }
-                }
-                if(tasteScore.useruri1 === tasteScore.useruri2){
-                    console.log('User 1 ist User 2');
-                } else {
-
-                    tasteScore.save(function(err){
-                        console.log(err,tasteScore);
-                    });
-                }
-            }
-        }
-
-        TasteScore.find().select('_id useruri1 useruri2')
-            .exec()
-            .then(docs => {
-                for (var i = 0; i < docs.length; i++){
-                    var counter = 0;
-                    for (var j = 0; j < docs.length; j++){
-                        if (docs[i].useruri1 === docs[j].useruri1 && docs[i].useruri2 === docs[j].useruri2){
-                            counter ++;
-                        }
-                    console.log('Zeile 331 ' + counter);
-                    }
-                    if (counter !== 0){
-                        var deleteID = docs[i]._id;
-                        TasteScore.remove({_id: deleteID}).exec();
-                    } else {
-                        console.log('kein Nutzer wurde gelöscht');
-                    }
-                }
-            })
-        res.status(200).json({
-            message: 'TasteScores Saved',
-        })
-    })
-    .catch(err =>{
-        console.log(err);
         res.status(500).json({error: err});
     });
 });
