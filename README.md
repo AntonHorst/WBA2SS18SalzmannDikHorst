@@ -14,7 +14,7 @@ Menschen lieben Musik. Musikgeschmäcker unterscheiden sich allerdings oft gewal
   
 id, useruri1, useruri2, score, artist_name(array), artist_uri(array)  
   
-### REQUESTS & RESPONSE  
+### Req & Res 
   
 GET /tastescore - gibt alle Tastescores in einer JSON zurück  
 GET /tastescore/{id} - gibt einen Tastescore mit der entsprechenden ID als JSON zurück  
@@ -27,7 +27,7 @@ DEL /tastescore/all - löscht alle Tastescores aus der JSON
   
 id, name, uri, artist_name(array), artist_uri(array)  
   
-### REQUESTS & RESPONSE  
+### Req & Res   
   
 GET /user - gibt alle User in einer JSON zurück  
 GET /user/{uri} - gibt einen User mit der entsprechenden URI als JSON zurück  
@@ -37,7 +37,7 @@ PCH /user/{id} - einen User Eintrag per ID ändern
   
 ## Login  
   
-### REQUESTS & RESPONSE  
+### Req & Res   
   
 /login (Browser) - öffnet die Spotify-Login-Seite   
   
