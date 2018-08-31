@@ -8,6 +8,9 @@ Menschen lieben Musik. Musikgeschmäcker unterscheiden sich allerdings oft gewal
 
 # Dokumentation
 
+In den App folder wechseln und per Kommandozeile mit dem Befehl starten: *npm start*  
+Der Server hört auf: *localhost:3000/*
+
 ## Tastescores  
   
 ### Attribute  
