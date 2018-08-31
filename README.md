@@ -8,39 +8,39 @@ Menschen lieben Musik. Musikgeschmäcker unterscheiden sich allerdings oft gewal
 
 # Dokumentation
 
-In den App folder wechseln und per Kommandozeile mit dem Befehl starten: *npm start*  
-Der Server hört auf: *localhost:3000/*
+In den App folder wechseln und per Kommandozeile mit dem Befehl starten: **npm start**
+Der Server hört auf: **localhost:3000/**
 
-## Tastescores  
+### Tastescores  
   
-### Attribute  
+#### Attribute  
   
 id, useruri1, useruri2, score, artist_name(array), artist_uri(array)  
   
-### Req & Res 
+#### Req & Res 
   
-GET /tastescore - gibt alle Tastescores in einer JSON zurück  
-GET /tastescore/{id} - gibt einen Tastescore mit der entsprechenden ID als JSON zurück  
-DEL /tastescore/{id} - löscht einen bestimmten Tastescore  
-DEL /tastescore/all - löscht alle Tastescores aus der JSON   
+**GET** /tastescore - gibt alle Tastescores in einer JSON zurück  
+**GET** /tastescore/{id} - gibt einen Tastescore mit der entsprechenden ID als JSON zurück  
+**DEL** /tastescore/{id} - löscht einen bestimmten Tastescore  
+**DEL** /tastescore/all - löscht alle Tastescores aus der JSON   
   
-## User  
+### User  
   
-### Attribute  
+#### Attribute  
   
 id, name, uri, artist_name(array), artist_uri(array)  
   
-### Req & Res   
+#### Req & Res   
   
-GET /user - gibt alle User in einer JSON zurück  
-GET /user/{uri} - gibt einen User mit der entsprechenden URI als JSON zurück  
-DEL /user/{uri} - löscht einen bestimmten User per URI  
-DEL /user/{id} - löscht einen bestimmten User per ID  
-PCH /user/{id} - einen User Eintrag per ID ändern  
+**GET** /user - gibt alle User in einer JSON zurück  
+**GET** /user/{uri} - gibt einen User mit der entsprechenden URI als JSON zurück  
+**DEL** /user/{uri} - löscht einen bestimmten User per URI  
+**DEL** /user/{id} - löscht einen bestimmten User per ID  
+**PCH** /user/{id} - einen User Eintrag per ID ändern  
   
-## Login  
+### Login  
   
-### Req & Res   
+#### Req & Res   
   
 /login (Browser) - öffnet die Spotify-Login-Seite   
   
