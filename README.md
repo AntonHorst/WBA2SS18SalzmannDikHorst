@@ -1,6 +1,6 @@
 WBA2SS18SalzmannDikHorst
 
-# Exposé  						      
+# Exposé - Projekt Locafy  						      
 
 ## Darstellung des Problemraums
 
