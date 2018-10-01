@@ -6,7 +6,7 @@
     "npm": "6.4.0"
   },
   "description": "A Node.js RESTful API Tutorial Project",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
@@ -28,7 +28,8 @@
     "query-string": "^6.1.0",
     "querystring": "^0.2.0",
     "request": "^2.87.0",
-    "spotify-web-api-node": "^4.0.0"
+    "spotify-web-api-node": "^4.0.0",
+    "nodemon": "^1.18.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.1"
