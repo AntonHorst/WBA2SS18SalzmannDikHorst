@@ -1,5 +1,0 @@
-{
-    "env":{
-        "MONGO_ATLAS_PW": "locafy_admin"
-    }
-}
