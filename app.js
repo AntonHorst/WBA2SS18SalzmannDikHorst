@@ -70,7 +70,7 @@ var generateRandomString = function(length) {
 
 var client_id  = 'b1c8b493b0604ce58ed5e5f28c3130a9';
 var client_secret = 'faa8849ed7a7466f8009e23dc8f86dc8';
-var redirect_uri = 'http://localhost:3000/callback';
+var redirect_uri = 'https://shielded-beach-61264.herokuapp.com/callback';
 
 var spoturi = '';
 
