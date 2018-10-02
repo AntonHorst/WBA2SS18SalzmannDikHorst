@@ -9,14 +9,14 @@ var SpotifyWebApi = require('spotify-web-api-node');
 var cookieParser = require('cookie-parser');
 const queryString = require('query-string');
 var querystring = require('querystring');
-var request = require('request'); // "Request" library
+var request = require('request'); // 'Request' library
 var useruri = '';
 
 //Schema Import
-var Taste = require("./api/models/taste");
-var User = require("./api/models/user");
-var UserList = require("./api/models/userList");
-var TasteScore = require("./api/models/tasteScore");
+var Taste = require('./api/models/taste');
+var User = require('./api/models/user');
+var UserList = require('./api/models/userList');
+var TasteScore = require('./api/models/tasteScore');
 
 //routes Import
 const tasteRoutes = require('./api/routes/taste');
@@ -118,7 +118,7 @@ app.get('/login', function(req, res) {
                     _id: new mongoose.Types.ObjectId(),
                     useruri1: docs[i].uri,
                     useruri2: docs[j].uri,
-                    score   : "0",
+                    score   : '0',
                     artists_name: [20],
                     artists_uri: [20]
                 })
@@ -133,10 +133,10 @@ app.get('/login', function(req, res) {
                             tasteScore.artists_uri[counter] = docs[i].artist_uri[k];
                             tasteScore.score+=0.5;
 
-                            console.log("User1:" + docs[i].name);
-                            console.log("Artist1:" + docs[i].artist_name[k]);
-                            console.log("User2:" + docs[j].name);
-                            console.log("Artist2:" + docs[j].artist_name[l]);
+                            console.log('User1:' + docs[i].name);
+                            console.log('Artist1:' + docs[i].artist_name[k]);
+                            console.log('User2:' + docs[j].name);
+                            console.log('Artist2:' + docs[j].artist_name[l]);
                             counter++;
                         }
                     }
@@ -345,7 +345,7 @@ app.get('/alluser', function(req, res){
 });
 
 app.use(function (req, res, next) {
-    res.status(404).send("Sorry can't find that!")
+    res.status(404).send('Sorry can\'t find that!')
 });
 
 module.exports = app;
